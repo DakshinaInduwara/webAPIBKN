@@ -1,5 +1,7 @@
 import Train from '../models/trainModel.js'
+import express from 'express';
 
+const router = express.Router();
 export const getTrainLocations = async (req, res) => {
   try {
     const trains = await Train.find();
@@ -31,3 +33,6 @@ export const addTrainLocation = async (req, res) => {
     }
   }
 };
+
+
+export default router;

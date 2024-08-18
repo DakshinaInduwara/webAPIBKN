@@ -29,8 +29,8 @@ app.use(cors())
 app.use("/web/train", trainRoute)
 app.use("/web/user", userRoute)
 app.use("/web/station", stationRoute)
-app.use('/web/schedule', scheduleRoute)
-app.use('/web/route', routeRoute)
+app.use("/web/schedule", scheduleRoute)
+app.use("/web/route", routeRoute)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
