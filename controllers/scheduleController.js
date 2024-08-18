@@ -2,17 +2,19 @@ import Schedule from '../models/scheduleModel.js';
 import Train from '../models/trainModel.js';
 import Station from '../models/stationModel.js';
 
+// Get all schedules
 export const getAllSchedules = async (req, res) => {
   try {
     const schedules = await Schedule.find()
-      .populate('trainId', 'trainId')  // Populate trainId with trainId field
-      .populate('stationId', 'name');  // Populate stationId with name field
-    res.json(schedules);
+      .populate('trainId', 'trainId')  // Populate trainId with trainId field from Train model
+      .populate('stationId', 'name');  // Populate stationId with name field from Station model
+    res.status(200).json(schedules);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
+// Add a new schedule
 export const addSchedule = async (req, res) => {
   const { trainId, stationId, arrivalTime, departureTime } = req.body;
 
@@ -43,11 +45,12 @@ export const addSchedule = async (req, res) => {
       const errors = Object.values(error.errors).map(err => err.message);
       res.status(400).json({ message: 'Validation Error', errors });
     } else {
-      res.status(500).json({ message: 'Server Error' });
+      res.status(500).json({ message: 'Server Error', error: error.message });
     }
   }
 };
 
+// Get a single schedule by ID
 export const getScheduleById = async (req, res) => {
   const { id } = req.params;
 
@@ -60,12 +63,13 @@ export const getScheduleById = async (req, res) => {
       return res.status(404).json({ message: 'Schedule not found' });
     }
 
-    res.json(schedule);
+    res.status(200).json(schedule);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
+// Update a schedule by ID
 export const updateSchedule = async (req, res) => {
   const { id } = req.params;
   const { trainId, stationId, arrivalTime, departureTime } = req.body;
@@ -81,17 +85,18 @@ export const updateSchedule = async (req, res) => {
       return res.status(404).json({ message: 'Schedule not found' });
     }
 
-    res.json(updatedSchedule);
+    res.status(200).json(updatedSchedule);
   } catch (error) {
     if (error.name === 'ValidationError') {
       const errors = Object.values(error.errors).map(err => err.message);
       res.status(400).json({ message: 'Validation Error', errors });
     } else {
-      res.status(500).json({ message: 'Server Error' });
+      res.status(500).json({ message: 'Server Error', error: error.message });
     }
   }
 };
 
+// Delete a schedule by ID
 export const deleteSchedule = async (req, res) => {
   const { id } = req.params;
 
@@ -102,8 +107,8 @@ export const deleteSchedule = async (req, res) => {
       return res.status(404).json({ message: 'Schedule not found' });
     }
 
-    res.json({ message: 'Schedule deleted successfully' });
+    res.status(200).json({ message: 'Schedule deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };

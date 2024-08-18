@@ -21,6 +21,11 @@ const trainSchema = new mongoose.Schema({
       max: [180, 'Longitude must be between -180 and 180'],
     },
   },
+  capacity: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

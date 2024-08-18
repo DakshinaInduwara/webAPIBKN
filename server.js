@@ -6,6 +6,7 @@ import trainRoute from './routes/trainRoutes.js'
 import userRoute from './routes/userRoutes.js'
 import stationRoute from './routes/stationRouts.js'
 import scheduleRoute from './routes/scheduleRoutes.js'
+import routeRoute from './routes/routeRoutes.js'
 
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/web/train", trainRoute)
 app.use("/web/user", userRoute)
 app.use("/web/station", stationRoute)
 app.use('/web/schedule', scheduleRoute)
+app.use('/web/route', routeRoute)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

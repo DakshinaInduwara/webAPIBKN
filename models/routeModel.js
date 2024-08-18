@@ -9,7 +9,7 @@ const routeSchema = new mongoose.Schema({
   },
   stations: [{
     stationId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Station',
       required: true,
     },

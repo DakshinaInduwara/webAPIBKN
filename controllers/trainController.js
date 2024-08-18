@@ -10,12 +10,13 @@ export const getTrainLocations = async (req, res) => {
 };
 
 export const addTrainLocation = async (req, res) => {
-  const { trainId, location } = req.body;
+  const { trainId, location, capacity } = req.body;
 
   try {
     const newTrain = new Train({
       trainId,
       location,
+      capacity,
     });
     const savedTrain = await newTrain.save();
     res.status(201).json(savedTrain);

@@ -5,13 +5,13 @@ const scheduleSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Train',
     required: [true, 'Train ID is required'],
-    index: true, // Index for faster lookup
+    index: true,
   },
   stationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Station',
     required: [true, 'Station ID is required'],
-    index: true, // Index for faster lookup
+    index: true,
   },
   arrivalTime: {
     type: Date,
@@ -34,27 +34,8 @@ const scheduleSchema = new mongoose.Schema({
     },
   },
 }, {
-  timestamps: true,  // Automatically adds createdAt and updatedAt fields
-  versionKey: false,  // Removes the __v field
-});
-
-// Virtual property to calculate duration between arrival and departure
-scheduleSchema.virtual('duration').get(function () {
-  return (this.departureTime - this.arrivalTime) / 1000; // Duration in seconds
-});
-
-// Method to check if the train is late
-scheduleSchema.methods.isLate = function (currentTime) {
-  return currentTime > this.arrivalTime;
-};
-
-// Pre-save middleware to ensure departure time is after arrival time
-scheduleSchema.pre('save', function (next) {
-  if (this.departureTime <= this.arrivalTime) {
-    next(new Error('Departure time must be after arrival time'));
-  } else {
-    next();
-  }
+  timestamps: true,
+  versionKey: false,
 });
 
 export default mongoose.model('Schedule', scheduleSchema);
