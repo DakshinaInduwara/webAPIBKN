@@ -1,13 +1,27 @@
 import Train from '../models/trainModel.js'
-import express, { request } from 'express';
 
-const router = express.Router();
+
 export const getTrainLocations = async (req, res) => {
   try {
     const trains = await Train.find();
     res.json(trains);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+export const findById = async (req, res) => {
+  try {
+    const trains = await Train.findById(req.params.id);
+    res.json({  
+trainId:trains.trainId,
+location:trains.location,
+lat:trains.lat,
+lon:trains.lon,
+capacity:trains.capacity
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error findById' });
   }
 };
 
@@ -34,5 +48,3 @@ export const addTrainLocation = async (req, res) => {
   }
 };
 
-
-export default router;
