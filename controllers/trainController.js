@@ -1,5 +1,5 @@
 import Train from '../models/trainModel.js'
-import express from 'express';
+import express, { request } from 'express';
 
 const router = express.Router();
 export const getTrainLocations = async (req, res) => {
@@ -12,14 +12,14 @@ export const getTrainLocations = async (req, res) => {
 };
 
 export const addTrainLocation = async (req, res) => {
-  const { trainId, location, capacity } = req.body;
 
   try {
     const newTrain = new Train({
-      trainId,
-      location,
-      capacity,
+      ...req.body,
+      
+
     });
+    console.log({newTrain});
     const savedTrain = await newTrain.save();
     res.status(201).json(savedTrain);
   } catch (error) 

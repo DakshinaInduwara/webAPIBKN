@@ -1,4 +1,5 @@
 import Route from '../models/routeModel.js';
+import Train from '../models/trainModel.js';
 
 // List of stations
 const stations = [
@@ -64,19 +65,33 @@ const stations = [
   ];
   
   // Function to fetch the next station's location every 1 minute
-export const fetchNextStationLocationEveryMinute = () => {
+export const fetchNextStationLocationEveryMinute = async () => {
     let currentIndex = 0; // Start from the first station
+    const trainId = 't0012';
   
-    setInterval(() => {
+    setInterval(async () => {
       const station = stations[currentIndex];
       if (station) {
         console.log(`Location of ${station.name}: Latitude ${station.lat}, Longitude ${station.lon}`);
+        let location = station.name
+        let lat = station.lat
+        let lon = station.lon
         currentIndex = (currentIndex + 1) % stations.length; // Move to the next station and wrap around
+        await Train.findOneAndUpdate({trainId: trainId}, {location,lat,lon})
       } else {
         console.log('Station not found.');
       }
     }, 60000); // 60000 ms = 1 minute
   };
+
+  //Update Train Location
+  export const UpdateTrainLoc = () => {
+    try {
+        
+    } catch (error) {
+        
+    }
+  }
   
   // Example: Start fetching the next station location every minute
   fetchNextStationLocationEveryMinute();

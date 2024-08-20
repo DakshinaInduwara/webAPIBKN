@@ -9,4 +9,4 @@ router.get('/routid', getRouteById);
 router.put('/updateroute', updateRoute);
 router.delete('deleroute', deleteRoute);
 
-export default router
+export default router;
