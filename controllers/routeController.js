@@ -84,15 +84,6 @@ export const fetchNextStationLocationEveryMinute = async () => {
     }, 60000); // 60000 ms = 1 minute
   };
 
-  //Update Train Location
-  export const UpdateTrainLoc = () => {
-    try {
-        
-    } catch (error) {
-        
-    }
-  }
-  
   // Example: Start fetching the next station location every minute
   fetchNextStationLocationEveryMinute();
 
