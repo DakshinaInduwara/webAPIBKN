@@ -14,18 +14,19 @@ export const findById = async (req, res) => {
   try {
     const trains = await Train.findById(req.params.id);
     res.json({  
-trainId:trains.trainId,
-location:trains.location,
-lat:trains.lat,
-lon:trains.lon,
-capacity:trains.capacity
+        trainId:trains.trainId,
+        location:trains.location,
+        lat:trains.lat,
+        lon:trains.lon,
+        speed:trains.speed,
+        capacity:trains.capacity
     });
   } catch (error) {
     res.status(500).json({ message: 'Server Error findById' });
   }
 };
 
-export const addTrainLocation = async (req, res) => {
+export const addTrain = async (req, res) => {
 
   try {
     const newTrain = new Train({

@@ -32,6 +32,11 @@ const trainSchema = new mongoose.Schema({
     required: true,
     default: 1,
   },
+  speed: {
+    type: Number,
+    require : true,
+    default: 0,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

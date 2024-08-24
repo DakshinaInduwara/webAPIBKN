@@ -7,6 +7,6 @@ router.post('/create', createRoute);
 router.get('/getall', getAllRoutes);
 router.get('/routid', getRouteById);
 router.put('/updateroute', updateRoute);
-router.delete('deleroute', deleteRoute);
+router.delete('/deleroute', deleteRoute);
 
 export default router;
