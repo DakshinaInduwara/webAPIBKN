@@ -79,32 +79,56 @@ const kandyStations = [
   { name: 'Kandy', lat: 7.2906, lon: 80.6337, spd: 38 }
 ];
 
-  // Function to fetch the next station's location every 1 minute
+  
   export const fetchNextStationLocationEveryMinute = async (trainId, stations) => {
     let currentIndex = 0;
+    let direction = 1; 
+    let atEnd = false; 
 
     setInterval(async () => {
         const station = stations[currentIndex];
+
         if (station) {
             console.log(`Location of ${station.name}: Latitude ${station.lat}, Longitude ${station.lon}, Speed ${station.spd}`);
             let location = station.name;
             let lat = station.lat;
             let lon = station.lon;
             let speed = station.spd;
-            currentIndex = (currentIndex + 1) % stations.length;
-            await Train.findOneAndUpdate({ trainId: trainId }, 
-                                        { location, lat, lon, speed});
+
+            
+            await Train.findOneAndUpdate(
+                { trainId: trainId },
+                { location, lat, lon, speed }
+            );
+
+            if (direction === 1 && currentIndex === stations.length - 1) {
+                
+                if (!atEnd) {
+                    console.log('Train reached the end of the route, pausing for 2 minutes...');
+                    atEnd = true;
+                    setTimeout(() => {
+                        direction = -1;
+                        atEnd = false;
+                    }, 120000); 
+                }
+            } else if (direction === -1 && currentIndex === 0) {
+                
+                direction = 1;
+            } else {
+                
+                currentIndex += direction;
+            }
         } else {
             console.log('Station not found.');
         }
-    }, 60000);
+    }, 60000); 
 };
 
-// Example: Start fetching the next station location for both routes every minute
+
 fetchNextStationLocationEveryMinute('T0020', stations); // Colombo to Matara
 fetchNextStationLocationEveryMinute('t0011', kandyStations); // Colombo to Kandy
 
-  // Function to get the location of a station by its name
+
   export const getStationLocationByName = (stationName) => {
     const station = stations.find(s => s.name === stationName);
     if (station) {
@@ -113,21 +137,6 @@ fetchNextStationLocationEveryMinute('t0011', kandyStations); // Colombo to Kandy
       return null;
     }
   };
-  
-  // Function to fetch the location every 1 minute
-//   export const fetchLocationEveryMinute = (stationName) => {
-//     setInterval(() => {
-//       const location = getStationLocationByName(stationName);
-//       if (location) {
-//         console.log(`Location of ${stationName}: Latitude ${location.lat}, Longitude ${location.lon}`);
-//       } else {
-//         console.log(`Station ${stationName} not found.`);
-//       }
-//     }, 60000); // 60000 ms = 1 minute
-//   };
-  
-//   // Example: Start fetching location of 'Colombo Fort' every minute
-//   fetchLocationEveryMinute('Colombo Fort');
   
 
 // Create a new route
