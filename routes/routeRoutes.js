@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/create', createRoute);
 router.get('/getall', getAllRoutes);
-router.get('/routid', getRouteById);
+router.get('/routid/:id', getRouteById);
 router.put('/updateroute', updateRoute);
-router.delete('/deleroute', deleteRoute);
+router.delete('/deleroute/:id', deleteRoute);
 
 export default router;

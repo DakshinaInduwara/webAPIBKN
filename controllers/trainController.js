@@ -15,6 +15,7 @@ export const findById = async (req, res) => {
     const trains = await Train.findById(req.params.id);
     res.json({  
         trainId:trains.trainId,
+        trainName:trains.trainName,
         location:trains.location,
         lat:trains.lat,
         lon:trains.lon,
@@ -31,7 +32,7 @@ export const addTrain = async (req, res) => {
   try {
     const newTrain = new Train({
       ...req.body,
-      
+
 
     });
     console.log({newTrain});
@@ -49,3 +50,17 @@ export const addTrain = async (req, res) => {
   }
 };
 
+//Delete train by id
+export const deleteTrainByid = async (req, res) => {
+  try {
+    console.log('ID received:', req.params.id); 
+    const deleteTrainByid = await Train.findByIdAndDelete(req.params.id);
+    if (!deleteTrainByid) {
+      return res.status(404).json({ message: 'Train not found' });
+    }
+    res.status(200).json({ message: 'Train deleted successfully' });
+  } catch (error) {
+    console.error('Error during delete:', error); // Log the error details
+    res.status(500).json({ message: 'Server Error deleteTrainByid', error: error.message });
+  }
+};

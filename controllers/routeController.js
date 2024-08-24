@@ -44,7 +44,7 @@ const stations = [
   { name: 'Dodanduwa', lat: 6.0731, lon: 80.1438, spd: 70},
   { name: 'Rathgama', lat: 6.0501, lon: 80.1569, spd: 50},
   { name: 'Boossa', lat: 6.0284, lon: 80.1688, spd: 70},
-  { name: 'Pitiwella', lat: 6.0123, lon: 80.1852, spd: 50},
+  { name: 'Pitiwella', lat: 6.0123, lon: 80.1852, spd: 52},
   { name: 'Ginthota', lat: 6.0022, lon: 80.1944, spd: 70},
   { name: 'Richmond Hill (Asgiriya)', lat: 5.9776, lon: 80.2127, spd: 70},
   { name: 'Galle', lat: 6.0334, lon: 80.2170, spd: 50},
@@ -57,9 +57,9 @@ const stations = [
   { name: 'Ahangama', lat: 5.8977, lon: 80.3206, spd: 70},
   { name: 'Midigama', lat: 5.8729, lon: 80.3375, spd: 50},
   { name: 'Weligama', lat: 5.9720, lon: 80.4257, spd: 70},
-  { name: 'Polwathumodara', lat: 5.9684, lon: 80.4358, spd: 70},
+  { name: 'Polwathumodara', lat: 5.9684, lon: 80.4358, spd: 85},
   { name: 'Mirissa', lat: 5.9492, lon: 80.4542, spd: 70},
-  { name: 'Kamburugamuwa', lat: 5.9396, lon: 80.4634, spd: 7},
+  { name: 'Kamburugamuwa', lat: 5.9396, lon: 80.4634, spd: 73},
   { name: 'Walgama', lat: 5.9268, lon: 80.4781, spd: 50},
   { name: 'Matara', lat: 5.9486, lon: 80.5353, spd: 57},
   ];
@@ -101,7 +101,7 @@ const kandyStations = [
 };
 
 // Example: Start fetching the next station location for both routes every minute
-fetchNextStationLocationEveryMinute('t0018', stations); // Colombo to Matara
+fetchNextStationLocationEveryMinute('T0020', stations); // Colombo to Matara
 fetchNextStationLocationEveryMinute('t0011', kandyStations); // Colombo to Kandy
 
   // Function to get the location of a station by its name
@@ -133,8 +133,8 @@ fetchNextStationLocationEveryMinute('t0011', kandyStations); // Colombo to Kandy
 // Create a new route
 export const createRoute = async (req, res) => {
   try {
-    const { routeName, stations } = req.body;
-    const newRoute = new Route({ routeName, stations });
+    const { routeName, stations, trainName } = req.body;
+    const newRoute = new Route({ routeName, stations, trainName });
     const savedRoute = await newRoute.save();
     res.status(201).json(savedRoute);
   } catch (error) {

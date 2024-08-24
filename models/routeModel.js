@@ -7,6 +7,10 @@ const routeSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  trainName: {
+    type: String,
+    require: true,
+  },
   stations: [{
     stationId: {
       type: String,

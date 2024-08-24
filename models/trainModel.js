@@ -7,9 +7,15 @@ const trainSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  trainName: {
+    type: String,
+    required: [true, 'Train name is required'],
+    unique: true,
+    trim: true,
+  },
   location: {
     type: String,
-    //required: [true, 'Train ID is required'],
+    //required: [true, 'Train location is required'],
     default: '',
   },
 
