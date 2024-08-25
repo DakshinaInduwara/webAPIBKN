@@ -7,7 +7,7 @@ const trainHistoryBkpSchema = new mongoose.Schema({
 },
 trainName: {
     type: String,
-    required: true,
+    //required: true,
   },
   location: { 
     type: String, 
