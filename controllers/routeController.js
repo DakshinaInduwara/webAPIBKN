@@ -1,5 +1,7 @@
 import Route from '../models/routeModel.js';
 import Train from '../models/trainModel.js';
+import TrainHistory from '../models/trainHistoryModel.js';
+import TrainHistoryBkp from '../models/trainHistoryBkpModel.js';
 
 // List of stations
 const stations = [
@@ -80,48 +82,44 @@ const kandyStations = [
 ];
 
   
-  export const fetchNextStationLocationEveryMinute = async (trainId, stations) => {
-    let currentIndex = 0;
-    let direction = 1; 
-    let atEnd = false; 
+export const fetchNextStationLocationEveryMinute = async (trainId, stations) => {
+  let currentIndex = 0;
+  let directionForward = true;
 
-    setInterval(async () => {
-        const station = stations[currentIndex];
+  setInterval(async () => {
+    const station = stations[currentIndex];
+    if (station) {
+      console.log(`Location of ${station.name}: Latitude ${station.lat}, Longitude ${station.lon}, Speed ${station.spd}`);
+      const { name: location, lat, lon, spd: speed } = station;
 
-        if (station) {
-            console.log(`Location of ${station.name}: Latitude ${station.lat}, Longitude ${station.lon}, Speed ${station.spd}`);
-            let location = station.name;
-            let lat = station.lat;
-            let lon = station.lon;
-            let speed = station.spd;
+      // Save to Train collection
+      await Train.findOneAndUpdate({ trainId: trainId }, { location, lat, lon, speed });
 
-            
-            await Train.findOneAndUpdate(
-                { trainId: trainId },
-                { location, lat, lon, speed }
-            );
+      // Save to TrainHistory collection
+      const newHistory = new TrainHistory({ trainId, location, lat, lon, speed });
+      await newHistory.save();
 
-            if (direction === 1 && currentIndex === stations.length - 1) {
-                
-                if (!atEnd) {
-                    console.log('Train reached the end of the route, pausing for 2 minutes...');
-                    atEnd = true;
-                    setTimeout(() => {
-                        direction = -1;
-                        atEnd = false;
-                    }, 120000); 
-                }
-            } else if (direction === -1 && currentIndex === 0) {
-                
-                direction = 1;
-            } else {
-                
-                currentIndex += direction;
-            }
+      if (directionForward) {
+        if (currentIndex < stations.length - 1) {
+          currentIndex++;
         } else {
-            console.log('Station not found.');
+          directionForward = false;
+          setTimeout(() => {
+            currentIndex--;
+          }, 120000); // Stay for 2 minutes
         }
-    }, 60000); 
+      } else {
+        if (currentIndex > 0) {
+          currentIndex--;
+        } else {
+          directionForward = true;
+          currentIndex++;
+        }
+      }
+    } else {
+      console.log('Station not found.');
+    }
+  }, 60000);
 };
 
 
@@ -216,3 +214,22 @@ export const deleteRoute = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+// Function to move data older than 90 days to backup table
+export const moveOldTrainDataToBackup = async () => {
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - 90);
+
+  // Find records older than 90 days
+  const oldRecords = await TrainHistory.find({ timestamp: { $lt: cutoffDate } });
+
+  // Insert them into the backup table
+  if (oldRecords.length > 0) {
+    await TrainHistoryBkp.insertMany(oldRecords);
+    // Delete them from the original table
+    await TrainHistory.deleteMany({ _id: { $in: oldRecords.map(record => record._id) } });
+  }
+};
+
+// Call the function periodically to move old data (e.g., daily)
+setInterval(moveOldTrainDataToBackup, 24 * 60 * 60 * 1000); // Run daily
