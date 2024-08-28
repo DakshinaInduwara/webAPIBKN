@@ -1,4 +1,4 @@
-import Station from '../models/stationModel.js'
+import Station from "../models/stationModel.js";
 
 // Get all stations
 export const getStations = async (req, res) => {
@@ -6,7 +6,7 @@ export const getStations = async (req, res) => {
     const stations = await Station.find();
     res.json(stations);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -15,11 +15,11 @@ export const getStationById = async (req, res) => {
   try {
     const station = await Station.findById(req.params.id);
     if (!station) {
-      return res.status(404).json({ message: 'Station not found' });
+      return res.status(404).json({ message: "Station not found" });
     }
     res.json(station);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -38,11 +38,11 @@ export const addStation = async (req, res) => {
     const savedStation = await newStation.save();
     res.status(201).json(savedStation);
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      const errors = Object.values(error.errors).map(err => err.message);
-      res.status(400).json({ message: 'Validation Error', errors });
+    if (error.name === "ValidationError") {
+      const errors = Object.values(error.errors).map((err) => err.message);
+      res.status(400).json({ message: "Validation Error", errors });
     } else {
-      res.status(500).json({ message: 'Server Error' });
+      res.status(500).json({ message: "Server Error" });
     }
   }
 };
@@ -50,17 +50,21 @@ export const addStation = async (req, res) => {
 // Update an existing station
 export const updateStation = async (req, res) => {
   try {
-    const updatedStation = await Station.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const updatedStation = await Station.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
     if (!updatedStation) {
-      return res.status(404).json({ message: 'Station not found' });
+      return res.status(404).json({ message: "Station not found" });
     }
     res.json(updatedStation);
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      const errors = Object.values(error.errors).map(err => err.message);
-      res.status(400).json({ message: 'Validation Error', errors });
+    if (error.name === "ValidationError") {
+      const errors = Object.values(error.errors).map((err) => err.message);
+      res.status(400).json({ message: "Validation Error", errors });
     } else {
-      res.status(500).json({ message: 'Server Error' });
+      res.status(500).json({ message: "Server Error" });
     }
   }
 };
@@ -70,10 +74,10 @@ export const deleteStation = async (req, res) => {
   try {
     const deletedStation = await Station.findByIdAndDelete(req.params.id);
     if (!deletedStation) {
-      return res.status(404).json({ message: 'Station not found' });
+      return res.status(404).json({ message: "Station not found" });
     }
-    res.json({ message: 'Station deleted' });
+    res.json({ message: "Station deleted" });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 };

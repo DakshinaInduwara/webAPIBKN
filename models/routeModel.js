@@ -1,30 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const routeSchema = new mongoose.Schema({
-  routeName: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
-  trainName: {
-    type: String,
-    require: true,
-  },
-  stations: [{
-    stationId: {
+const routeSchema = new mongoose.Schema(
+  {
+    routeName: {
       type: String,
-      ref: 'Station',
       required: true,
+      unique: true,
+      trim: true,
     },
-    sequence: {
-      type: Number,
-      required: true,
+    trainName: {
+      type: String,
+      require: true,
     },
-  }],
-}, {
-  timestamps: true,
-  versionKey: false,
-});
+    stations: [
+      {
+        stationId: {
+          type: String,
+          ref: "Station",
+          required: true,
+        },
+        sequence: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
-export default mongoose.model('Route', routeSchema);
+export default mongoose.model("Route", routeSchema);
