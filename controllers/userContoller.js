@@ -1,4 +1,4 @@
-import User from '../models/userModel.js'
+import User from '../models/userModel.js';
 
 // Get all users
 export const getAllUsers = async (req, res) => {
@@ -52,6 +52,79 @@ export const addloginUser = async (req, res) => {
     }
 
     res.status(200).json({ message: 'Login successful', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Update an existing user
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { username, email, role } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(id, { username, email, role }, { new: true, runValidators: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User updated successfully', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Update an admin user
+export const updateAdminUser = async (req, res) => {
+  const { id } = req.params;
+  const { username, email, role } = req.body;
+
+  try {
+    // Check if the user is an admin
+    const user = await User.findById(id);
+    if (!user || user.role !== 'admin') {
+      return res.status(404).json({ message: 'Admin user not found' });
+    }
+
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.role = role || user.role;
+
+    await user.save();
+
+    res.status(200).json({ message: 'Admin user updated successfully', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Delete a user
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Delete an admin user
+export const deleteAdminUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    if (!user || user.role !== 'admin') {
+      return res.status(404).json({ message: 'Admin user not found' });
+    }
+
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({ message: 'Admin user deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
   }
