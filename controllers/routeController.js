@@ -81,6 +81,55 @@ const kandyStations = [
   { name: "Kandy", lat: 7.2906, lon: 80.6337, spd: 38 },
 ];
 
+// List of stations for Badulla to Colombo
+const badullaToColomboStations = [
+  { name: "Badulla", lat: 6.9892, lon: 81.0557, spd: 45 },
+  { name: "Hali Ela", lat: 6.9416, lon: 81.0553, spd: 40 },
+  { name: "Demodara", lat: 6.9053, lon: 81.0575, spd: 50 },
+  { name: "Ella", lat: 6.8663, lon: 81.0465, spd: 60 },
+  { name: "Kithal Ella", lat: 6.8405, lon: 81.0433, spd: 55 },
+  { name: "Heel Oya", lat: 6.7839, lon: 81.0162, spd: 70 },
+  { name: "Bandarawela", lat: 6.8374, lon: 80.9863, spd: 65 },
+  { name: "Haputale", lat: 6.7656, lon: 80.9521, spd: 80 },
+  { name: "Idalgashinna", lat: 6.7187, lon: 80.8939, spd: 70 },
+  { name: "Ohiya", lat: 6.7964, lon: 80.8475, spd: 90 },
+  { name: "Pattipola", lat: 6.8843, lon: 80.8196, spd: 60 },
+  { name: "Ambewela", lat: 6.9429, lon: 80.7945, spd: 70 },
+  { name: "Nanu Oya", lat: 6.9493, lon: 80.7821, spd: 75 },
+  { name: "Great Western", lat: 6.9998, lon: 80.7462, spd: 60 },
+  { name: "Radella", lat: 7.0254, lon: 80.7191, spd: 50 },
+  { name: "Talawakele", lat: 6.9704, lon: 80.6623, spd: 80 },
+  { name: "Watagoda", lat: 6.9752, lon: 80.6224, spd: 65 },
+  { name: "Kotagala", lat: 6.9649, lon: 80.5826, spd: 50 },
+  { name: "Hatton", lat: 6.8915, lon: 80.5855, spd: 85 },
+  { name: "Rozella", lat: 6.8306, lon: 80.5811, spd: 70 },
+  { name: "Watawala", lat: 6.8313, lon: 80.5224, spd: 55 },
+  { name: "Galboda", lat: 6.8763, lon: 80.4849, spd: 90 },
+  { name: "Inguru Oya", lat: 6.9206, lon: 80.4371, spd: 60 },
+  { name: "Nawalapitiya", lat: 6.9445, lon: 80.4596, spd: 50 },
+  { name: "Gampola", lat: 7.1355, lon: 80.5707, spd: 55 },
+  { name: "Gelioya", lat: 7.1651, lon: 80.5932, spd: 70 },
+  { name: "Peradeniya", lat: 7.2715, lon: 80.5953, spd: 45 },
+  { name: "Kandy", lat: 7.2906, lon: 80.6337, spd: 50 },
+  { name: "Katugastota", lat: 7.3313, lon: 80.6371, spd: 65 },
+  { name: "Polgahawela", lat: 7.3355, lon: 80.2992, spd: 80 },
+  { name: "Ragama", lat: 7.0305, lon: 79.9489, spd: 70 },
+  { name: "Maradana", lat: 6.9274, lon: 79.8654, spd: 55 },
+  { name: "Colombo Fort", lat: 6.9335, lon: 79.8507, spd: 50 },
+];
+
+// List of stations for Anuradapura to Kurunegala
+const anuradhapuraToKurunegalaStations = [
+  { name: "Anuradhapura", lat: 8.3564, lon: 80.4176, spd: 70 },
+  { name: "Mihintale", lat: 8.3704, lon: 80.5012, spd: 60 },
+  { name: "Saliyapura", lat: 8.3163, lon: 80.5041, spd: 55 },
+  { name: "Galgamuwa", lat: 7.9907, lon: 80.4524, spd: 80 },
+  { name: "Ambanpola", lat: 7.8442, lon: 80.3913, spd: 75 },
+  { name: "Maho", lat: 7.8183, lon: 80.3071, spd: 60 },
+  { name: "Rambukkana", lat: 7.2864, lon: 80.3621, spd: 50 },
+  { name: "Kurunegala", lat: 7.4877, lon: 80.3623, spd: 85 },
+];
+
 export const colomboToPanaduraStations = stations.slice(
   0,
   stations.findIndex((station) => station.name === "Panadura") + 1
@@ -155,6 +204,8 @@ fetchNextStationLocationEveryMinute("t0011", kandyStations); // Colombo to Kandy
 fetchNextStationLocationEveryMinute("T0088", colomboToPanaduraStations);
 fetchNextStationLocationEveryMinute("T0090", colomboToAluthgamaStations);
 fetchNextStationLocationEveryMinute("T0091", colomboToGalleStations);
+fetchNextStationLocationEveryMinute("T0050", badullaToColomboStations);
+fetchNextStationLocationEveryMinute("T0055", anuradhapuraToKurunegalaStations);
 
 export const getStationLocationByName = (stationName) => {
   const station = stations.find((s) => s.name === stationName);
