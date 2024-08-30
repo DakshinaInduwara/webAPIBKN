@@ -1,0 +1,505 @@
+openapi: 3.0.0
+info:
+  title: View Train Location API Testing
+  description: API documentation for Train Management System - COBSCCOMP221P-008
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000 
+
+paths:
+  # Train Routes
+  /web/train/get:
+    get:
+      summary: Get all train locations
+      tags:
+        - Train
+      responses:
+        200:
+          description: A list of train locations
+        500:
+          description: Server Error
+
+  /web/train/get/{id}:
+    get:
+      summary: Get a train by ID
+      tags:
+        - Train
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      responses:
+        200:
+          description: Details of a specific train
+        500:
+          description: Server Error
+
+  /web/train/create:
+    post:
+      summary: Add a new train
+      tags:
+        - Train
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+      responses:
+        201:
+          description: Train created successfully
+        400:
+          description: Validation Error
+        500:
+          description: Server Error
+
+  /web/train/train/{id}:
+    put:
+      summary: Update a train by ID
+      tags:
+        - Train
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+      responses:
+        200:
+          description: Train updated successfully
+        400:
+          description: Validation Error
+        404:
+          description: Train not found
+        500:
+          description: Server Error
+
+  /web/train/deleteTrain/{id}:
+    delete:
+      summary: Delete a train by ID
+      tags:
+        - Train
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The train ID
+      responses:
+        200:
+          description: Train deleted successfully
+        404:
+          description: Train not found
+        500:
+          description: Server Error
+
+  # User Routes
+  /web/user/users:
+    get:
+      summary: Get all users
+      tags:
+        - User
+      responses:
+        200:
+          description: A list of users
+        500:
+          description: Server Error
+
+  /web/user/register:
+    post:
+      summary: Register a new user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: User registered successfully
+        400:
+          description: Validation Error
+        500:
+          description: Server Error
+
+  /web/user/login:
+    post:
+      summary: User login
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        200:
+          description: User logged in successfully
+        400:
+          description: Invalid email or password
+        500:
+          description: Server Error
+
+  /web/user/users/{id}:
+    put:
+      summary: Update a user by ID
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: User updated successfully
+        404:
+          description: User not found
+        500:
+          description: Server Error
+
+  /web/user/admin/users/{id}:
+    put:
+      summary: Update an admin user by ID
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The admin user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Admin user updated successfully
+        404:
+          description: Admin user not found
+        500:
+          description: Server Error
+
+  /web/user/delusers/{id}:
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The user ID
+      responses:
+        200:
+          description: User deleted successfully
+        404:
+          description: User not found
+        500:
+          description: Server Error
+
+  /web/user/admin/delusers/{id}:
+    delete:
+      summary: Delete an admin user by ID
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The admin user ID
+      responses:
+        200:
+          description: Admin user deleted successfully
+        404:
+          description: Admin user not found
+        500:
+          description: Server Error
+
+  # Station Routes
+  /web/station/getall:
+    get:
+      summary: Get all stations
+      tags:
+        - Station
+      responses:
+        200:
+          description: A list of stations
+        500:
+          description: Server Error
+
+  /web/station/getStatinid/{id}:
+    get:
+      summary: Get a station by ID
+      tags:
+        - Station
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The station ID
+      responses:
+        200:
+          description: Details of a specific station
+        404:
+          description: Station not found
+        500:
+          description: Server Error
+
+  /web/station/addStation:
+    post:
+      summary: Add a new station
+      tags:
+        - Station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        201:
+          description: Station created successfully
+        400:
+          description: Validation Error
+        500:
+          description: Server Error
+
+  /web/station/updateStation/{id}:
+    put:
+      summary: Update a station by ID
+      tags:
+        - Station
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The station ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        200:
+          description: Station updated successfully
+        400:
+          description: Validation Error
+        404:
+          description: Station not found
+        500:
+          description: Server Error
+
+  /web/station/delete/{id}:
+    delete:
+      summary: Delete a station by ID
+      tags:
+        - Station
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The station ID
+      responses:
+        200:
+          description: Station deleted successfully
+        404:
+          description: Station not found
+        500:
+          description: Server Error
+
+  # Route Routes
+  /web/route/create:
+    post:
+      summary: Create a new route
+      tags:
+        - Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                routeName:
+                  type: string
+                stations:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      stationId:
+                        type: string
+                      sequence:
+                        type: integer
+                trainName:
+                  type: string
+      responses:
+        201:
+          description: Route created successfully
+        400:
+          description: Validation Error
+        500:
+          description: Server Error
+
+  /web/route/getall:
+    get:
+      summary: Get all routes
+      tags:
+        - Routes
+      responses:
+        200:
+          description: A list of all routes
+        500:
+          description: Server Error
+
+  /web/route/routid/{id}:
+    get:
+      summary: Get a route by ID
+      tags:
+        - Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Route found
+        404:
+          description: Route not found
+        500:
+          description: Server Error
+
+  /web/route/updateroute/{id}:
+    put:
+      summary: Update a route by ID
+      tags:
+        - Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                routeName:
+                  type: string
+                stations:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      stationId:
+                        type: string
+                      sequence:
+                        type: integer
+                trainName:
+                  type: string
+      responses:
+        200:
+          description: Route updated successfully
+        404:
+          description: Route not found
+        500:
+          description: Server Error
+
+  /web/route/deleteroute/{id}:
+    delete:
+      summary: Delete a route by ID
+      tags:
+        - Routes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Route deleted successfully
+        404:
+          description: Route not found
+        500:
+          description: Server Error
+
+components:
+  schemas:
+    Train:
+      type: object
+      properties:
+        trainName:
+          type: string
+        route:
+          type: string
+        currentLocation:
+          type: string
+        status:
+          type: string
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    Station:
+      type: object
+      properties:
+        stationName:
+          type: string
+        location:
+          type: string

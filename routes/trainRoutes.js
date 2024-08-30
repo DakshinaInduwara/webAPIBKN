@@ -1,9 +1,18 @@
-import express from 'express'
-import {addTrainLocation, getTrainLocations} from '../controllers/trainController.js'
+import express from "express";
+import {
+  addTrain,
+  findById,
+  getTrainLocations,
+  updateTrain,
+  deleteTrainByid,
+} from "../controllers/trainController.js";
 
 const router = express.Router();
 
-router.get('/get', getTrainLocations);
-router.post('/create', addTrainLocation);
+router.get("/get", getTrainLocations);
+router.get("/get/:id", findById);
+router.post("/create", addTrain);
+router.put("/train/:id", updateTrain);
+router.delete("/deleteTrain/:id", deleteTrainByid);
 
 export default router;
