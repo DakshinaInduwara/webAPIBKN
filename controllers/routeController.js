@@ -81,6 +81,21 @@ const kandyStations = [
   { name: "Kandy", lat: 7.2906, lon: 80.6337, spd: 38 },
 ];
 
+export const colomboToPanaduraStations = stations.slice(
+  0,
+  stations.findIndex((station) => station.name === "Panadura") + 1
+);
+
+export const colomboToAluthgamaStations = stations.slice(
+  0,
+  stations.findIndex((station) => station.name === "Aluthgama") + 1
+);
+
+export const colomboToGalleStations = stations.slice(
+  0,
+  stations.findIndex((station) => station.name === "Galle") + 1
+);
+
 export const fetchNextStationLocationEveryMinute = async (
   trainId,
   stations
@@ -137,6 +152,9 @@ export const fetchNextStationLocationEveryMinute = async (
 
 fetchNextStationLocationEveryMinute("T0020", stations); // Colombo to Matara
 fetchNextStationLocationEveryMinute("t0011", kandyStations); // Colombo to Kandy
+fetchNextStationLocationEveryMinute("T0088", colomboToPanaduraStations);
+fetchNextStationLocationEveryMinute("T0090", colomboToAluthgamaStations);
+fetchNextStationLocationEveryMinute("T0091", colomboToGalleStations);
 
 export const getStationLocationByName = (stationName) => {
   const station = stations.find((s) => s.name === stationName);
@@ -167,7 +185,7 @@ export const createRoute = async (req, res) => {
 // Get all routes
 export const getAllRoutes = async (req, res) => {
   try {
-    const routes = await Route.find().populate("stations.stationId");
+    const routes = await Route.find();
     res.status(200).json(routes);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
@@ -177,17 +195,30 @@ export const getAllRoutes = async (req, res) => {
 // Get a single route by ID
 export const getRouteById = async (req, res) => {
   try {
+    // Log the incoming request ID for debugging
+    console.log(`Fetching route with ID: ${req.params.id}`);
+    
+    // Fetch the route from the database
     const route = await Route.findById(req.params.id).populate(
       "stations.stationId"
     );
+
+    // Check if the route exists
     if (!route) {
       return res.status(404).json({ message: "Route not found" });
     }
+
+    // Send the route details as the response
     res.status(200).json(route);
   } catch (error) {
+    // Log the error details for debugging
+    console.error("Error fetching route by ID:", error);
+
+    // Send an error response
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 // Update a route by ID
 export const updateRoute = async (req, res) => {

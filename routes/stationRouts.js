@@ -13,6 +13,6 @@ router.get("/getall", getStations);
 router.get("/getStatinid/:id", getStationById);
 router.post("/addStation", addStation);
 router.put("/updateStation/:id", updateStation);
-router.delete("/delete", deleteStation);
+router.delete("/delete/:id", deleteStation);
 
 export default router;
